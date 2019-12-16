@@ -6,9 +6,8 @@ from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
-from SpellingReveal.RequestMaker import *
-from SpellingReveal.ImageLoader import get_pixel_at_pos
-
+from ImageLoader import *
+from RequestMaker import *
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
@@ -28,6 +27,8 @@ def main():
     Merges all of the cells in range 1 and 2 into 2x2 cell blocks
     :return: nothing
     """
+
+    init(IMAGESIZE)
 
     # Get credentials and connect with the API
     creds = None
@@ -59,12 +60,12 @@ def main():
     for x in range(IMAGESIZE):
         for y in range(IMAGESIZE):
             question_row = (random.randint(0, 9) * y + random.randint(0, 9) * x + random.randint(0, 9)) % NUMWORDS
-            color = get_color_at_pos(x,y, IMAGESIZE)
+            color = get_color_at_pos(x, y)
             answer = ANSWERS[question_row]
             requests.append(get_format_request(x, y, color, 2*question_row, answer))
 
     body = {'requests': requests}
-    response = sheet.batchUpdate(spreadsheetId=SPREADSHEET_ID, body=body).execute()
+    sheet.batchUpdate(spreadsheetId=SPREADSHEET_ID, body=body).execute()
 
 
 

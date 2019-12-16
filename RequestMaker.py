@@ -64,13 +64,29 @@ def get_format_request(x, y, color, question_row, answer):
                     },
                     "format": {
                         "backgroundColor": {
-                            "red": color[0],
-                            "green": color[1],
-                            "blue": color[2]
+                            "red": color[0] / 255,
+                            "green": color[1] / 255,
+                            "blue": color[2] / 255
                         }
                     }
                 }
             },
             "index": 0
         }
+    }
+
+
+def get_create_request(name):
+    return {
+        "properties": {
+            "title": name
+        }
+    }
+
+
+def write_words_request(word, num):
+    return {
+        "range": "C" + str(num) + ":C" + str(num + 1),
+        "majorDimension": "DIMENSION_UNSPECIFIED",
+        "values": [[word]]
     }
