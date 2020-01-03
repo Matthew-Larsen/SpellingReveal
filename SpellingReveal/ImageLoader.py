@@ -23,7 +23,7 @@ def init(total_size=20):
 
 
 def get_color_at_pos(x, y):
-    return pixels[(x * size) / imageSize, (y * size) / imageSize]
+    return pixels[((x * size) / imageSize) + 1, ((y * size) / imageSize) + 1]
 
 # if __name__ == "__main__":
 #    init()

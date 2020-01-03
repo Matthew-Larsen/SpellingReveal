@@ -6,8 +6,8 @@ from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
-from ImageLoader import *
-from RequestMaker import *
+from SpellingReveal.ImageLoader import *
+from SpellingReveal.RequestMaker import *
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 

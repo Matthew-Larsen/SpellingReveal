@@ -41,7 +41,8 @@ def get_row_resize_request(size):
     }
 
 
-def get_format_request(x, y, color, question_row, answer):
+def get_format_request(x, y, color, question_row, answer, pixelsperprompt):
+    letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[pixelsperprompt]
     return {
         "addConditionalFormatRule": {
             "rule": {
@@ -49,8 +50,8 @@ def get_format_request(x, y, color, question_row, answer):
                     {
                         "startRowIndex": y,
                         "endRowIndex": y + 1,
-                        "startColumnIndex": x + 4,
-                        "endColumnIndex": x + 5,
+                        "startColumnIndex": x + (2 * pixelsperprompt),
+                        "endColumnIndex": x + 1 + (2 * pixelsperprompt),
                     }
                 ],
                 "booleanRule": {
@@ -58,7 +59,8 @@ def get_format_request(x, y, color, question_row, answer):
                         "type": "CUSTOM_FORMULA",
                         "values": [
                             {
-                                "userEnteredValue": "=$C$" + str(question_row + 1) + "=\"" + answer + "\""
+                                "userEnteredValue": "=$" + str(letter) + "$" + str(
+                                    question_row + 1) + "=\"" + answer + "\""
                             }
                         ]
                     },
@@ -84,9 +86,20 @@ def get_create_request(name):
     }
 
 
-def write_words_request(word, num):
+def write_words_request(word, pixelsperprompt, num):
+    letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[pixelsperprompt]
     return {
-        "range": "C" + str(num) + ":C" + str(num + 1),
+        "range": str(letter) + str(num) + ":" + str(letter) + str(num + 1),
         "majorDimension": "DIMENSION_UNSPECIFIED",
         "values": [[word]]
+    }
+
+
+def get_additional_col_request(numCols):
+    return {
+        "appendDimension": {
+            "dimension": "COLUMNS",
+            "length": numCols,
+        }
+
     }
